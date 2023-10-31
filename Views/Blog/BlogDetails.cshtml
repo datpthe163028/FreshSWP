@@ -1,0 +1,338 @@
+﻿@{
+    var Blog = ViewData["Blog"] as Blog;
+
+    var check = 0;
+    var check1 = 0;
+    var check2 = 0;
+    if (Model.ImageBlogs.Where(p => p.IsBigImg).OrderBy(p => p.ImageBlogId).Select(p => p.ImageURL).ToList().Count >= 1)
+        check1 = 1;
+    if (Model.ImageBlogs.Where(p => p.IsBigImg).OrderBy(p => p.ImageBlogId).Select(p => p.ImageURL).ToList().Count >= 2 && Model.ImageBlogs.Where(p => p.IsBigImg == false).OrderBy(p => p.ImageBlogId).Select(p => p.ImageURL).ToList().Count >= 2)
+        check = 1;
+    if (Model.ImageBlogs.Where(p => p.IsBigImg).OrderBy(p => p.ImageBlogId).Select(p => p.ImageURL).ToList().Count >= 3 && Model.ImageBlogs.Where(p => p.IsBigImg == false).OrderBy(p => p.ImageBlogId).Select(p => p.ImageURL).ToList().Count >= 4)
+        check2 = 1;
+}
+@model Blog
+<!-- blogcss -->
+<link rel="stylesheet" href="~/blogcss/css/style.css">
+<!-- end blogcss -->
+@{
+    var users = Context.User;
+    var isAdmin = users.Identity.IsAuthenticated && users.IsInRole("Admin");
+}
+
+<section class="htc__product__area shop__page ptb--130 bg__white">
+
+    <div id="page">
+        <!-- Mobile Menu -->
+        <!-- /Mobile Menu -->
+        <!-- /End Header 1 Warp -->
+        @if (check1 == 1)
+        {
+            <section class="boxed no-padding bg-img" style="background-image: url(@Model.ImageBlogs.Where(p => p.IsBigImg).OrderBy(p => p.ImageBlogId).Select(p => p.ImageURL).ToList()[0])">
+                <div class="sub-header full">
+                </div>
+            </section>
+        }
+
+        <!-- /subheader -->
+
+        <section style="padding-top: 0px">
+            <div class="container">
+                <div class="row">
+                    <article style="padding: 0px 135px; " class="post">
+                        <h1 style="  margin-top: 60px; font-family: Poppins-SVN, Kailasa, Noto Sans; margin-bottom: 30px; font-weight: 800">@Model.name</h1>
+                        <div style="margin-top: 45px; margin-bottom: 45px" class="col-md-12">
+                            <strong class="dark-color">SHARE THIS ARTICLE</strong> <br />
+                            <ul class="widget-social-list-2 left">
+                                <li><a href="https://www.facebook.com/sharer/sharer.php?u=https://vietcetera.com/" target="_blank"><i class="fa ti-facebook" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa ti-twitter-alt" aria-hidden="true"></i></a></li>
+                                <li>
+                                    <a href="https://www.instagram.com/?url=https://vietcetera.com/"><i class="fa ti-instagram" aria-hidden="true"></i></a>
+                                </li>
+                                <li><a href="#"><i class="fa ti-pinterest" aria-hidden="true"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <p style="color: #585656; font-family: Merriweather;font-size: 23px;font-weight: 300;line-height: 35px;">
+                                @Model.content
+                            </p>
+                        </div>
+
+                        @if (check == 1)
+                        {
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div style="position: relative; width: 100%; height: 0; padding-bottom: 75%; overflow: hidden;">
+                                        <img src="@Model.ImageBlogs.Where(p => p.IsBigImg).OrderBy(p => p.ImageBlogId).Select(p => p.ImageURL).ToList()[1]" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="Image">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div style="position: relative; width: 100%; height: 0; padding-bottom: 75%; overflow: hidden;">
+                                                <img src="@Model.ImageBlogs.Where(p => p.IsBigImg == false).OrderBy(p => p.ImageBlogId).Select(p => p.ImageURL).ToList()[0]" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;" alt="Image">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div style="position: relative; width: 100%; height: 0; padding-bottom: 75%; overflow: hidden;">
+                                                <img src="@Model.ImageBlogs.Where(p => p.IsBigImg == false).OrderBy(p => p.ImageBlogId).Select(p => p.ImageURL).ToList()[1]" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;" alt="Image">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.isCollection)
+                        {
+                            @if (check2 == 1)
+                            {
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div style="position: relative; width: 100%; height: 0; padding-bottom: 75%; overflow: hidden;">
+                                                    <img src="@Model.ImageBlogs.Where(p => p.IsBigImg == false).OrderBy(p => p.ImageBlogId).Select(p => p.ImageURL).ToList()[2]" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;" alt="Image">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div style="position: relative; width: 100%; height: 0; padding-bottom: 75%; overflow: hidden;">
+                                                    <img src="@Model.ImageBlogs.Where(p => p.IsBigImg == false).OrderBy(p => p.ImageBlogId).Select(p => p.ImageURL).ToList()[3]" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;" alt="Image">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div style="position: relative; width: 100%; height: 0; padding-bottom: 75%; overflow: hidden;">
+                                            <img src="@Model.ImageBlogs.Where(p => p.IsBigImg).OrderBy(p => p.ImageBlogId).Select(p => p.ImageURL).ToList()[2]" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="Image">
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+
+                        <div style="margin-top: 50px" class="col-md-12">
+                            <p style="color: #585656; font-family: Merriweather;font-size: 23px;font-weight: 300;line-height: 35px;">
+                                @Model.content2
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <!-- /article Post -->
+
+
+        <section class=" no-padding">
+            <div class="container">
+                <div style="padding: 0px 135px" class="row">
+                    @if (Model.isCollection)
+                    {
+                        <div style="padding-left: 0px" class="col-md-12">
+                            <h2 style="text-align: center">Bộ sưu tập</h2>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="padding-left: 0px" class="col-md-12">
+                            <h2>RELATED POSTS</h2>
+                        </div>
+                    }
+                    <div class="row">
+                        @foreach (var item in Model.Products)
+                        {
+                            <div style="padding-left: 0px" class="col-md-3 single__pro col-lg-3 col-md-4 cat--1 col-sm-12">
+                                <div style="padding-left: 0px" class="product foo">
+                                    <div class="product__inner">
+                                        <div class="pro__thumb">
+                                            <a href="/Product/DetailProduct?id=@item.ProductId">
+                                                <img src="@item.ImageMain" alt="product images">
+                                            </a>
+                                        </div>
+                                        <div class="product__hover__info">
+                                            <ul class="product__action">
+                                                <li><a asp-controller="Product" asp-action="DetailProduct" asp-route-id="@item.ProductId" title="View" class="quick-view modal-view detail-link"><span class="ti-eye"></span></a></li>
+                                                <li> <a data-bs-toggle="tooltip" title="Add To Wishlist" class="add-to-cart scroll-link" asp-route-id="@item.ProductId" asp-action="AddWishList" asp-controller="Product"><span class="ti-heart"></span></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product__details">
+                                        <h2 style="margin-bottom: 10px"><a asp-controller="Product" asp-action="DetailProduct" asp-route-id="@item.ProductId">@item.ProductName</a></h2>
+                                        <ul class="product__price">
+                                            @if (item.IsAvailble == false)
+                                            {
+                                                <li style="padding-left: 0px" class="new__price">Hết hàng</li>
+                                            }
+                                            else
+                                            {
+                                                if (item.Discount == 0)
+                                                {
+                                                    <li style="padding-left: 0px" class="new__price">@(item.ProductPrice - item.Discount).000vnd</li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="old__price">@(item.ProductPrice).000vnd</li>
+                                                    <li class="new__price">@(item.ProductPrice - item.Discount).000vnd</li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /relate post -->
+        @if (Model.isCollection != true)
+        {
+            <section class="no-padding mgt-60">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div style="padding: 0px 135px" class="list-comments">
+                                <h2>COMMENTS</h2>
+                                <ul class="commentlist">
+                                    @foreach (var comment in Model.Comment)
+                                    {
+                                        <li>
+                                            <div class="user-image">
+                                                <img src="https://res.cloudinary.com/dtwmfo4fl/image/upload/v1690325309/generic-user-icon-10_1_xdyijb.jpg" alt="" class="img-responsive">
+                                            </div>
+                                            <div class="comment-right">
+                                                <div class="comment-info">
+                                                    <strong class="dark-color pull-left name">@comment.User.UserName</strong>
+                                                </div>
+                                                <p>@comment.Content</p>
+                                                <a class="c-reply reply-link cursor-pointer" onclick="toggleReplyForm()" data-form-id="replyForm-@comment.commentId" href="#">Reply</a>
+                                                @if (isAdmin)
+                                                {
+                                                    <br />
+                                                    <a class="c-reply" href="/comment/deleteComment?commentId=@comment.commentId&blogId=@Model.Blogid">Delete</a>
+                                                }
+                                            </div>
+                                            @if (comment.Answers.Any())
+                                            {
+                                                <ul class="children">
+                                                    @foreach (var answer in comment.Answers)
+                                                    {
+                                                        <li>
+                                                            <div class="user-image">
+                                                                <img class="img-responsive" src="https://res.cloudinary.com/dtwmfo4fl/image/upload/v1690325309/generic-user-icon-10_1_xdyijb.jpg" alt="">
+                                                            </div>
+                                                            <div class="comment-right">
+                                                                <div class="comment-info">
+                                                                    <strong class="dark-color pull-left name">@answer.User.UserName</strong>
+                                                                </div>
+                                                                <p>@answer.content</p>
+                                                                @if (isAdmin)
+                                                                {
+                                                                    <br />
+                                                                    <a class="c-reply" href="/comment/deleteAnswer?answerId=@answer.answerId&blogId=@Model.Blogid">Delete</a>
+                                                                }
+                                                            </div>
+
+                                                        </li>
+                                                    }
+                                                </ul>
+
+                                            }
+                                        </li>
+                                        <ul id="replyForm-@comment.commentId" class="children mt-2 mb-2" style="display: none;">
+                                            <form class="scroll-form" method="post" action="/Comment/AddAnswer" class="form-inline">
+                                                @Html.AntiForgeryToken()
+
+                                                <div class="form-group">
+                                                    <input type="hidden" name="commentId" value="@comment.commentId" />
+                                                    <input type="hidden" name="blogId" value="@Model.Blogid" />
+                                                    <input type="text" name="content" placeholder="Nhập phản hồi của bạn" class="form-control" required />
+                                                </div>
+
+                                                <button type="submit" class="btn btn-primary mt-2">Gửi</button>
+                                            </form>
+                                        </ul>
+
+                                    }
+                                    <div class="mt-2 mb-2">
+                                        <form class="scroll-form" method="post" action="/Comment/AddComment">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="blogId" value="@Model.Blogid" />
+                                            <input type="text" name="content" placeholder="Nhập bình luận của bạn" class="form-control form-control-lg" required>
+                                            <button type="submit" class="btn btn-primary mt-2">Gửi</button>
+                                        </form>
+                                    </div>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="line-top-right w-680"></div>
+            </section>
+        }
+
+        <!-- /Comment List -->
+    </div>
+</section>
+
+<script>
+    function toggleReplyForm(formId) {
+        var replyForm = document.getElementById(formId);
+        if (replyForm.style.display === "none") {
+            replyForm.style.display = "block";
+        } else {
+            replyForm.style.display = "none";
+        }
+    }
+
+    var replyLinks = document.getElementsByClassName("reply-link");
+    for (var i = 0; i < replyLinks.length; i++) {
+        replyLinks[i].addEventListener("click", function (e) {
+            e.preventDefault();
+            var formId = this.getAttribute("data-form-id");
+            toggleReplyForm(formId);
+        });
+    }
+
+</script>
+
+<script>
+    var links = document.querySelectorAll(".scroll-link");
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener("click", function (event) {
+            event.preventDefault();
+            var scrollPos = window.scrollY;
+            localStorage.setItem("scrollPos", scrollPos);
+            window.location.href = this.href;
+        });
+    }
+
+    window.onload = function () {
+        var scrollPos = localStorage.getItem("scrollPos");
+        if (scrollPos) {
+            window.scrollTo({ top: scrollPos, behavior: 'auto' });
+            localStorage.removeItem("scrollPos");
+        }
+    };
+</script>
+
+
+<script>
+    document.querySelector(".scroll-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var scrollPos = window.scrollY;
+        localStorage.setItem("scrollPos", scrollPos);
+        this.submit(); // Gửi yêu cầu tới Action About trong HomeController
+    });
+
+    window.onload = function () {
+        var scrollPos = localStorage.getItem("scrollPos");
+        if (scrollPos) {
+            window.scrollTo({ top: scrollPos, behavior: 'auto' });
+            localStorage.removeItem("scrollPos");
+        }
+    };
+</script>

@@ -1,0 +1,164 @@
+﻿@model List<Bill>
+
+@{
+	Layout = "~/Views/Shared/_DashLayout.cshtml";
+}
+
+<div class="container-fluid dashboard-content ">
+
+	<!-- pageheader  -->
+
+	<div class="row">
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+			<div class="page-header">
+				<h2 class="pageheader-title">Quản Lý  </h2>
+				<div class="page-breadcrumb">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="/admin/index" class="breadcrumb-link">Dashboard</a></li>
+							<li class="breadcrumb-item active" aria-current="page">View all orders</li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<main role="main">
+		
+
+			<div class="card">
+				<div class="card-body">
+					<div class="d-lg-flex align-items-center mb-4 gap-3">
+						<div class="position-relative">
+						<input oninput="SearchByMail()" id="SearchBill" type="text" class="form-control ps-5 radius-30" placeholder="Search Order"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
+						</div>
+						
+
+					</div>
+					<div class="ms-auto text-end">
+					</div>
+
+					<div class="table-responsive">
+
+
+					<div id="_BillLists">
+						@if (Model == null)
+						{
+							<p>No bills found.</p>
+						}
+						else
+						{
+							<table class="table mb-0">
+								<thead class="table-light">
+									<tr>
+										<th>Order#</th>
+										<th>Email</th>
+										<th>Status</th>
+										<th>Total</th>
+										<th>Date</th>
+										<th>Address</th>
+										<th>ViewDetail</th>
+										<th>Actions</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var bill in Model)
+									{
+										<form method="post" asp-controller="Seller" asp-action="ProcessBillAll">
+											<input type="hidden" name="billId" value="@bill.BillId" />
+
+										<tr>
+											<td>
+												<div class="d-flex align-items-center">
+													<div>
+													</div>
+													<div class="ms-2">
+														<h6 class="mb-0 font-14">@bill.BillId</h6>
+													</div>
+												</div>
+											</td>
+											<td>@bill.Email</td>
+											<td>
+													@if (bill.BillStatus == "0")
+													{
+													<div class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">
+														<i class='bx bxs-circle me-1'></i>Đã Đặt Hàng
+													</div>
+													}
+													else if (bill.BillStatus == "1")
+													{
+													<div class="badge rounded-pill text-warning bg-light-warning p-2 text-uppercase px-3">
+														<i class='bx bxs-circle me-1'></i>Đã nhận đơn
+													</div>
+													}
+													else if (bill.BillStatus == "2")
+													{
+													<div class="badge rounded-pill text-primary bg-light-primary p-2 text-uppercase px-3">
+														<i class='bx bxs-circle me-1'></i>Đang giao hàng
+													</div>
+													}
+													@*else if (bill.BillStatus == "3")
+										{
+										<div class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">
+										<i class='bx bxs-circle me-1'></i>Đã hoàn thành
+										</div>
+										}*@
+											</td>
+											<td>@(bill.TotalPrice.ToString("N0").Replace(",", ".") + ".000" + " VND")</td>
+											<td>@string.Format("{0:dddd, dd MMMM yyyy}", bill.PurchaseDate)</td>
+
+											<td>@bill.ShippingAddress</td>
+
+
+											<td><a href="/Seller/DetailBill/?billId=@bill.BillId" type="button" class="btn btn-primary btn-sm radius-30 px-4">View Detail</a></td>
+											<td>
+													@if (bill.BillStatus == "0")
+													{
+													<input class="btn btn-success btn-sm radius-30 px-4" style="width:9vw" type="submit" value="Confirm" />
+													}
+													else if (bill.BillStatus == "1")
+													{
+													<input class="btn btn-success btn-sm radius-30 px-4" style="width:9vw" type="submit" value="Shipping" />
+													}
+													else if (bill.BillStatus == "2")
+													{
+													<input class="btn btn-success btn-sm radius-30 px-4" style="width:9vw" type="submit" value="Done" />
+													}
+
+											</td>
+										</tr>
+										</form>
+									}
+
+								</tbody>
+							</table>
+						}
+							</div>
+						
+					</div>
+
+				</div>
+			</div>
+
+		<script>
+			function SearchByMail() {
+
+				$.ajax({
+					type: "GET",
+					url: '@Url.Action("SearchBillByName","Seller")',
+					data: { search: $('#SearchBill').val() },
+					success: function (result) {
+						// Handle the search results
+						$("#_BillLists").empty();
+						$("#_BillLists").html(result);
+					}
+				});
+			}
+
+		</script>
+	</main>
+	<!-- end pageheader  -->
+</div>

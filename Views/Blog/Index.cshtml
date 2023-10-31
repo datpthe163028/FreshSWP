@@ -1,0 +1,58 @@
+﻿@model IEnumerable<dynamic>
+
+<!-- blogcss -->
+<link rel="stylesheet" href="~/blogcss/css/style.css">
+<!-- end blogcss -->
+<!-- royal_loader -->
+<div style="background-color: #ffffff;" class="">
+    <div class="boxed no-padding bg-img" style="background-image: url('https://res.cloudinary.com/dtwmfo4fl/image/upload/v1687962616/blog-bg_gjxwsw.jpg');">
+        <div class="sub-header depen-on-img d-flex justify-content-center align-items-center" style="width: 70%;">
+            <img src="https://res.cloudinary.com/dtwmfo4fl/image/upload/v1687962616/blog-bg_gjxwsw.jpg" class="img-responsive" alt="Image">
+            <div class="sub-header-inner center-center">
+                <h2>BLOG</h2>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- /subheader -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="blog-list">
+
+                    @foreach (var blog in Model)
+                    {
+                        <div class="item-post pt--30">
+                            <a href="/blog/BlogDetails?blogId=@blog.Blogid">
+                                <img src="@blog.FirstImage" class="img-responsive" alt="Image">
+                            </a>
+                            <div class="desc">
+                                <h4><a href="/blog/BlogDetails?blogId=@blog.Blogid">@blog.name </a></h4>
+                                <div class="meta">
+                                    <span class="meta-date">@blog.DateUp.ToString("MMMM, dd\"th\", yyyy")</span><span class="meta-author"> - by <a href="/blog/BlogDetails?blogId=@blog.Blogid">Crophos</a> </span><span class="meta-cate"> - in <a href="blog.html">Design</a></span>
+                                </div>
+                                <div class="meta">
+                                </div>
+
+                                @if (blog.content.Length > 195)
+                                {
+                                    <p>@blog.content.Substring(0, 194) ...</p>
+                                }
+                                else
+                                {
+                                    <p>@blog.content</p>
+                                }
+
+                                <a href="/blog/BlogDetails?blogId=@blog.Blogid" class="ot-btn border-dark">Read More</a>
+                            </div>
+                        </div>
+                        <hr style="background-color: #896868;height:3px">
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Bloglist -->
+</div>

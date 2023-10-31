@@ -1,0 +1,73 @@
+﻿@using Project.Data
+@inject ShopContext _shopContext
+@{
+    List<BillDetail> list = new List<BillDetail>();
+
+    if (ViewData["bill"] != null)
+    {
+        var l = ViewData["bill"] as Bill;
+
+        list = _shopContext.BillDetails.Where(p => p.BillId == l.BillId).ToList();
+    }
+}
+
+@if (list.Count > 0)
+{
+    <div style="display: flex ;justify-content: center;">
+        <a class="btn btn-danger" style=" height: 40px; margin-bottom: 70px; margin-top: 40px; width: 300px; " href="/Home/Index">Hãy tiếp tục mua hàng</a>
+    </div>
+    <div class="container">
+        <div class="row  justify-content-center">
+            <div class="col-md-10">
+                <div class="table-content table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="product-thumbnail">Image</th>
+                                <th class="product-name">Product</th>
+                                <th class="product-name">Color</th>
+                                <th class="product-name">Size</th>
+                                <th class="product-quantity">Quantity</th>
+                                <th class="product-price">Price</th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+                            @foreach (var l in list)
+                            {
+                                var product = _shopContext.Products.Find(l.ProductId);
+                                if (product != null)
+                                {
+                                    <tr>
+                                        <td class="product-thumbnail"><a href="#"><img src="@product.ImageMain" alt="product img" /></a></td>
+                                        <td class="product-name"><a asp-controller="Product" asp-action="DetailProduct" asp-route-id="@product.ProductId">@product.ProductName</a></td>
+                                        <td class="product-price"><span style="display:block; margin-left:47px; width: 25px; height: 25px; background-color: @l.color " class="amount"></span></td>
+                                        <td class="product-price"><span class="amount">@l.size</span></td>
+                                        <td class="product-quantity">
+                                            <h3>
+                                                @l.quantity
+                                            </h3>
+                                        </td>
+                                        <td class="product-subtotal">
+                                            @(
+                                                (product.ProductPrice - product.Discount) * l.quantity
+                                                ).000Vnd
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div style="display: flex ;justify-content: center;">
+        <a class="btn btn-danger" style=" height: 40px; margin-bottom: 70px; margin-top: 150px; width: 300px; " href="/Home/Index">Hãy tiếp tục mua hàng</a>
+    </div>
+}
+

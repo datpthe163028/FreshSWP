@@ -1,0 +1,254 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/dashbroadcss/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="~/dashbroadcss/vendor/fonts/circular-std/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/dashbroadcss/libs/css/style.css">
+    <link rel="stylesheet" href="~/dashbroadcss/vendor/fonts/fontawesome/css/fontawesome-all.css">
+    <link rel="stylesheet" href="~/dashbroadcss/vendor/charts/chartist-bundle/chartist.css">
+    <link rel="stylesheet" href="~/dashbroadcss/vendor/charts/morris-bundle/morris.css">
+    <link rel="stylesheet" href="~/dashbroadcss/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="~/dashbroadcss/vendor/charts/c3charts/c3.css">
+    <link rel="stylesheet" href="~/dashbroadcss/vendor/fonts/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="~/dashbroadcss/vendor/addEdit-Product/add-edit-Product.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <title>Dashboard</title>
+</head>
+@{
+    var user = Context.User;
+    var isAdmin = user.Identity.IsAuthenticated && user.IsInRole("Admin");
+    var isMarketing = user.Identity.IsAuthenticated && user.IsInRole("Marketing");
+    var isSeller = user.Identity.IsAuthenticated && user.IsInRole("Seller");
+    var user1 = SignInManager.UserManager.GetUserAsync(User).Result;
+}
+
+<!-- Đoạn mã HTML khác trong layout -->
+@if (isAdmin)
+{
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/index">Dashboard Admin</a>
+    </li>
+}
+
+<!-- Đoạn mã HTML khác trong layout -->
+
+<body>
+    <!-- main wrapper -->
+    <div class="dashboard-main-wrapper">
+        <!-- navbar -->
+        <div class="dashboard-header">
+            <nav class="navbar navbar-expand-lg bg-white fixed-top">
+                <a class="navbar-brand" href="/admin/index">Dash Board</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto navbar-right-top">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li style="margin-top: 20px; border-right: 0px;" class="nav-item">
+                                @{
+
+                                    var email = user1.Email;
+                                    var username = email.Substring(0, email.IndexOf("@"));
+                                }
+                                <a style="margin-top : 10px"> @username</a>
+                            </li>
+                        }
+                        <li class="nav-item dropdown nav-user">
+                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="~/dashbroadcss/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle"></a>
+                            <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
+                                @* <div class="nav-user-info">
+                                <h5  style="padding-left: 15px" class="mb-0 text-white nav-user-name">Hoàng
+                                </h5>
+                                </div>*@
+
+                               
+
+                                <a class="dropdown-item" href="#">
+                                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <button id="logout" type="submit" class="dropdown-item nav-link btn btn-link text-dark">Đăng xuất</button>
+                                    </form>
+                                </a>
+                          
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <!-- end navbar -->
+        <!-- left sidebar -->
+        <div class="nav-left-sidebar sidebar-dark">
+            <div class="menu-list">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav flex-column">
+                            <li class="nav-divider">
+                                Menu
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
+                                <div id="submenu-1" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+
+                                        @if (isAdmin)
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/admin/index">Dashboard Admin</a>
+                                            </li>
+                                        }
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/Home/index">Home Customer</a>
+                                        </li>
+
+
+
+                                    </ul>
+                                </div>
+                            </li>
+                            @if (isAdmin || isSeller)
+                            {
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="/Seller/Order" data-toggle="collapse" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4"><i class="fab fa-fw fa-wpforms"></i>Order</a>
+                                    <div id="submenu-4" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            @if (isAdmin)
+                                         {
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/Seller/ViewAll">View All Order</a>
+                                            </li>
+                                          }
+                                            @if (isSeller)
+                                            {
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/Seller/ViewOrder">Order for Seller</a>
+                                            </li>
+                                            }
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/Seller/DoneOrder">All Order Done</a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            @if (isAdmin)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5" aria-controls="submenu-5"><i class="fas fa-fw fa-table"></i>Product</a>
+                                    <div id="submenu-5" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/admin/DashProduct">List all Product</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/admin/cfFeedback">Confirm Feedback</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+                            @if (isAdmin || isMarketing)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-6"><i class="fas fa-fw fa-file"></i> Blog </a>
+                                    <div id="submenu-6" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/Blog/ViewBlog">View Blog</a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+
+                            }
+                            @if (isAdmin)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-6"><i class="fas fa-fw fa-file"></i> RoleManage </a>
+                                    <div id="submenu-2" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/Admin/Roles">Add Roles</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/admin/members">Users Manage</a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- end left sidebar -->
+
+
+
+        <div class="dashboard-wrapper">
+            <div class="dashboard-ecommerce">
+                @RenderBody()
+
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+
+    <div class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                    Made by <a href="https://www.facebook.com/phongnv0/">Phong Nguyễn</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderSection("Scripts", required: false)
+
+    <!-- end footer -->
+    <!-- end wrapper  -->
+    <!-- Optional JavaScript -->
+    <!-- jquery 3.3.1 -->
+    <script src="~/dashbroadcss/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <!-- bootstap bundle js -->
+    <script src="~/dashbroadcss/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <!-- slimscroll js -->
+    <script src="~/dashbroadcss/vendor/slimscroll/jquery.slimscroll.js"></script>
+    <!-- main js -->
+    <script src="~/dashbroadcss/libs/js/main-js.js"></script>
+    <!-- chart chartist js -->
+    <script src="~/dashbroadcss/vendor/charts/chartist-bundle/chartist.min.js"></script>
+    <!-- sparkline js -->
+    <script src="~/dashbroadcss/vendor/charts/sparkline/jquery.sparkline.js"></script>
+    <!-- morris js -->
+    <script src="~/dashbroadcss/vendor/charts/morris-bundle/raphael.min.js"></script>
+    <script src="~/dashbroadcss/vendor/charts/morris-bundle/morris.js"></script>
+    <!-- chart c3 js -->
+    <script src="~/dashbroadcss/vendor/charts/c3charts/c3.min.js"></script>
+    <script src="~/dashbroadcss/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
+    <script src="~/dashbroadcss/vendor/charts/c3charts/C3chartjs.js"></script>
+    <script src="~/dashbroadcss/libs/js/dashboard-ecommerce.js"></script>
+</body>
+
+</html>

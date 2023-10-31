@@ -1,0 +1,68 @@
+﻿@model List<Product>
+
+@{
+	Layout = null;
+}
+
+@if (Model == null)
+{
+	<p>No Products found.</p>
+}
+else
+{
+	<table class="table mb-0 text-center">
+		<thead class="table-light">
+			<tr>
+				<th>Id</th>
+				<th>Product Name</th>
+				<th>Main Image</th>
+				<th>Unit Price</th>
+				<th>Date</th>
+				<th>Home status</th>
+				<th>Actions</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var product in Model)
+			{
+
+
+				<tr>
+					<td>
+						<div class="d-flex align-items-center">
+
+							<div class="ms-2">
+								<h6 class="mb-0 font-14">@product.ProductId</h6>
+							</div>
+						</div>
+					</td>
+					<td>@product.ProductName</td>
+					<td>
+						<img src="@product.ImageMain" style="max-width: 50px">
+					</td>
+					<td>@product.ProductPrice</td>
+
+					<td>@string.Format("{0:dddd, dd MMMM yyyy}", product.ImportDate)</td>
+
+					<td>
+						<a href="/Admin/changeHomeStatus?pid=@product.ProductId">
+							<i class="fas fa-edit"></i>
+							@(product.HomeStatus == true ? "Enable" : "Disable")
+
+						</a>
+					</td>
+
+
+					<td class="align-middle">
+						<a href="/Admin/ViewDetailProd?productId=@product.ProductId" class="btn btn-primary btn-sm radius-30 px-4">View Detail</a>
+						<a href="/Admin/UpdateProduct?productId=@product.ProductId" class="btn btn-info btn-sm radius-30 px-4">Update</a>
+						<a href="/Admin/delProd?productId=@product.ProductId" onclick="check(event)" class="btn btn-danger btn-sm radius-30 px-4">Delete</a>
+					</td>
+				</tr>
+
+			}
+
+		</tbody>
+	</table>
+}

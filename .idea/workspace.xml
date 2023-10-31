@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a35465c8-9749-489f-8bc5-08a053b5d000" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/Role/Create.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/Role/Create.cshtml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/Role/Delete.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/Role/Delete.cshtml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/Role/Index.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/Role/Index.cshtml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/Role/RolePageModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/Role/Update.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/Role/Update.cshtml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/Role/_StatusMessage.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/Role/_ViewImports.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/Role/_ViewStart.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/User/AddRole.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/User/AddRole.cshtml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/User/Index.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/User/Index.cshtml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/User/SetPassword.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/User/SetPassword.cshtml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/User/_StatusMessage.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/User/_ViewImports.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Areas/Admin/Pages/User/_ViewStart.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2R6dxvHiFlJIMZ2Ddx5wwBpUBJJ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Trycode/SWP/SWPTest/SWP/ProjectS/Areas",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Trycode\SWP\SWPTest\SWP\ProjectS\Areas" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a35465c8-9749-489f-8bc5-08a053b5d000" name="Changes" comment="" />
+      <created>1686574716567</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1686574716567</updated>
+      <workItem from="1686574717615" duration="2784000" />
+      <workItem from="1686584509958" duration="6000" />
+      <workItem from="1686620951998" duration="971000" />
+      <workItem from="1686627803455" duration="367000" />
+      <workItem from="1687400415720" duration="430000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

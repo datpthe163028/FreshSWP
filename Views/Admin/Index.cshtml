@@ -1,0 +1,236 @@
+﻿@{
+    Layout = "~/Views/Shared/_DashLayout.cshtml";
+    DateTime now = DateTime.Now;
+    var l = System.Text.Json.JsonEncodedText.Encode(ViewData["top1"].ToString());
+    var l1 = System.Text.Json.JsonEncodedText.Encode(ViewData["top2"].ToString());
+    var l2 = System.Text.Json.JsonEncodedText.Encode(ViewData["top3"].ToString());
+    var total = ViewData["total"] as double?;
+}
+@model SortedDictionary<int, double>
+
+<div class="container-fluid dashboard-content ">
+
+    <!-- pageheader  -->
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+                <h2 class="pageheader-title">Dashboard </h2>
+                <div class="page-breadcrumb">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <main role="main">
+        <div class="row">
+            @*<div style=" margin-left: 45px; height: 150px;background-color: white" class="col-md-2">
+            Product: @ViewData["pCount"]
+            </div>
+
+            <div style=" margin-left: 6vw; height: 150px;background-color: white" class="col-md-2">
+            category: @ViewData["uCount"]
+            </div>
+
+            <div style="  margin-left: 6vw; height: 150px;background-color: white" class="col-md-2">
+            customer: @ViewData["yCount"]
+            </div>
+
+            <div  style="  margin-left: 6vw; height: 150px; background-color: white" class="col-md-2">
+            role: @ViewData["rCount"]
+            </div>
+            *@
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                <div class="card border-3 border-top border-top-primary ">
+                    <div class="card-body " style="background:white">
+                        <div class="row">
+                            <div class="col-8">
+                                <h5 class="text-muted" style="margin-bottom: -6px;">Total Products</h5>
+                                <h1>@ViewData["pCount"]</h1>
+                            </div>
+                            <div class="col-4"><i class="mdi mdi-tshirt-crew " style="font-size: -webkit-xxx-large;"></i></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                <div class="card border-3 border-top border-top-primary ">
+                    <div class="card-body " style="background:white">
+                        <div class="row">
+                            <div class="col-8">
+                                <h5 class="text-muted" style="margin-bottom: -6px;">Total Categories</h5>
+                                <h1>@ViewData["uCount"]</h1>
+                            </div>
+                            <div class="col-4"><i class="mdi mdi-table-large " style="font-size: -webkit-xxx-large;"></i></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                <div class="card border-3 border-top border-top-primary ">
+                    <div class="card-body " style="background:white">
+                        <div class="row">
+                            <div class="col-8">
+                                <h5 class="text-muted" style="margin-bottom: -6px;">Total Customers</h5>
+                                <h1>@ViewData["yCount"]</h1>
+                            </div>
+                            <div class="col-4"><i class="mdi mdi-account " style="font-size: -webkit-xxx-large;"></i></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                <div class="card border-3 border-top border-top-primary ">
+                    <div class="card-body " style="background:white">
+                        <div class="row">
+                            <div class="col-8">
+                                <h5 class="text-muted" style="margin-bottom: -6px;">Total Orders</h5>
+                                <h1>@ViewData["rCount"]</h1>
+                            </div>
+                            <div class="col-4"><i class="mdi mdi-cart-outline " style="font-size: -webkit-xxx-large;"></i></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div style="margin-right: 52px;" class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-12">
+                <div class="card" style="background: white;">
+                    <canvas id="revenueChart" width="400" height="200"></canvas>
+                    <div style=" margin-bottom: 3px; margin-top: 40px" class="row  d-flex justify-content-center align-items-center">
+                        <p style="font-weight: 400; font-size: 20px">
+
+                            Revenue for the year
+                        </p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 d-flex justify-content-center align-items-center">
+                            <p style="font-size: 17px; color: red; font-family: Merriweather;">     TRONG THÁNG: @((ViewData["totalMonth"] as double?).Value.ToString("N0").Replace(",", ".") + ".000" + " VND")</p>
+                        </div>
+                        <div class="col-md-6 d-flex justify-content-center align-items-center">
+                            <p style="font-size: 17px; color: red; font-family: Merriweather;">    TRONG NĂM: @(total.Value.ToString("N0").Replace(",", ".") + ".000" + " VND")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                <div class="card" style=" padding-top: 110px; padding-bottom: 30px;margin:auto; background-color: white">
+                    <canvas  id="myChart" style=" margin-left: 40px; height: 400px; padding-right: 40px"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <!-- end pageheader  -->
+</div>
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    var month = [];
+    var revenue = [];
+    @foreach (var item in Model)
+    {
+        <text>
+            month.push('Tháng ' + '@item.Key');
+        revenue.push(parseFloat('@item.Value'));
+        </text>
+    };
+
+    var revenueData = {
+        labels: [],
+        datasets: [{
+            label: "Doanh thu trong năm ( .000VND )",
+            data: [],
+            fill: false,
+            borderColor: "red",
+            borderWidth: 1,
+            pointRadius: 6,
+            pointHoverRadius: 8,
+            pointStyle: "circle"
+        }]
+    };
+
+    month.forEach(function (month) {
+        revenueData.labels.push(month);
+    });
+
+    revenue.forEach(function (revenue) {
+        revenueData.datasets[0].data.push(revenue);
+    });
+    // Tạo biểu đồ đường
+    var ctx = document.getElementById("revenueChart").getContext("2d");
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: revenueData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    var colors = ['rgb(75, 192, 192)', 'rgb(255, 99, 132)', 'rgb(54, 162, 235)'];
+    var productData = [
+        { name: '@(l)', sales: '@ViewData["top11"]' },
+        { name: '@(l1)', sales: '@ViewData["top22"]' },
+        { name: '@(l2)', sales: '@ViewData["top33"]' },
+    ];
+
+    var labels = productData.map(function (item) {
+        return item.name;
+    });
+    var data = productData.map(function (item) {
+        return item.sales;
+    });
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Sản phẩm bán chạy nhất',
+                data: data,
+                backgroundColor: colors,
+                borderColor: colors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 10
+                    }
+                }
+            }
+        }
+    });
+
+
+</script>

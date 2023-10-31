@@ -1,0 +1,94 @@
+﻿
+@model Blog
+
+@{
+    Layout = "~/Views/Shared/_DashLayout.cshtml";
+}
+<div class="container-fluid dashboard-content ">
+
+    <!-- pageheader  -->
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+                <h2 class="pageheader-title">Quản Lý  </h2>
+                <div class="page-breadcrumb">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">E-Commerce Dashboard Template</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <main role="main">
+        <form action="/Blog/Update" method="post">
+            <input type="hidden" id="Blogid" name="Blogid" value="@Model.Blogid" />
+            <div class="container" style="background: white;border-radius:5px">
+                <div class="row">
+                    <div class="col-md-6">
+                        <br />
+                        <div class="form-group">
+                            <label for="HomeStatus">Home Status</label>
+                            <select id="HomeStatus" name="HomeStatus" class="form-control">
+                                @if (Model.HomeStatus == true)
+                                {
+                                    <option value="true" selected>Enable</option>
+                                    <option value="false">Disable</option>
+                                }
+                                else
+                                {
+                                    <option value="true">Enable</option>
+                                    <option value="false" selected>Disable</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="DateUp">Date Updated</label>
+                            <input type="datetime" id="DateUp" name="DateUp" class="form-control" value="@Model.DateUp" required />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <br />
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" class="form-control" value="@Model.name" required />
+                        </div>
+
+                        <div class="form-check">
+                            <br /><br />
+                            <input type="checkbox" id="isCollection" name="isCollection" class="form-check-input" value="true" @(Model.isCollection ? "checked" : "") />
+                            <input type="hidden" name="isCollection" value="false" />
+                            <label for="isCollection" class="form-check-label">Is Collection</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="content">Content</label>
+                    <textarea id="content" name="content" class="form-control" required>@Model.content</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="content2">Second Content</label>
+                    <textarea id="content2" name="content2" class="form-control" required>@Model.content2</textarea>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="/Blog/ViewBlog" class="btn btn-secondary">Cancel</a>
+                </div><br />
+
+            </div>
+        </form>
+    </main>
+    <!-- end pageheader  -->
+</div>
+
+
+

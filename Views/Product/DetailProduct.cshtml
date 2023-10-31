@@ -1,0 +1,430 @@
+﻿@model Product
+@{
+    int x = 0;
+    int y = 0;
+    Dictionary<string, int> myDictionary = new Dictionary<string, int>();
+    var listS = ViewData["list"] as List<string>;
+    var Lsize = new List<string>();
+    var LColor = new List<string>();
+
+}
+@using Project.Data
+@inject ShopContext _shopContext
+<div class="ht__bradcaump__area" style="margin-top: 10px; height: 400px; background: rgba(0, 0, 0, 0) url(/images/bg/2.jpg) no-repeat scroll center center / cover ;">
+    <div class="ht__bradcaump__wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="bradcaump__inner text-center">
+                        <h style="margin-top: 10px;" 2 class="bradcaump-title">Product Details</h>
+                        <nav class="bradcaump-inner">
+                            <a class="breadcrumb-item">OrangeShop</a>
+                            <span class="brd-separetor">/</span>
+                            <span class="breadcrumb-item active">Product Details</span>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="htc__product__details pt--120 pb--100 bg__white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-6 col-sm-12">
+                <div class="product__details__container">
+                    <!-- Start Small images -->
+                    <div class="nav product__small__images" role="tablist">
+                        <div class="row">
+                            <ul class="col-sm-6">
+
+                                <li role="presentation" class="pot-small-img">
+                                    <a class="active" href="#img-tab-main" role="tab" data-bs-toggle="tab">
+                                        <img src="@ViewData["image"]" alt="small-image" style="max-width: 50px">
+                                    </a>
+                                </li>
+
+                                @foreach (var image in Model.ImageProducts)
+                                {
+                                    <li role="presentation" class="pot-small-img">
+                                        <a href="#img-tab-@y" role="tab" data-bs-toggle="tab">
+                                            <img src="@(image.ImageURL)" alt="small-image" style="max-width: 50px">
+                                        </a>
+                                    </li>
+                                    y++;
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- End Small images -->
+                    <!-- Start Big image -->
+                    <div class="product__big__images">
+                        <div class="portfolio-full-image tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="img-tab-main">
+                                <img src="@ViewData["image"]" size="400px" alt="full-image" style="max-width: 450px">
+                            </div>
+
+                            @foreach (var image in Model.ImageProducts)
+                            {
+
+                                <div role="tabpanel" class="tab-pane" id="img-tab-@x">
+                                    <img src="@(image.ImageURL)" alt="full-image" style="max-width: 450px">
+                                </div>
+                                x++;
+
+                            }
+                        </div>
+                    </div>
+
+                    <!-- End Big image -->
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-6 col-sm-12 smt-30 xmt-30">
+                <div class="htc__product__details__inner">
+                    <div class="pro__detl__title">
+                        <h2>@Model.ProductName</h2>
+                    </div>
+                    <div class="pro__dtl__rating">
+                        <ul class="pro__rating">
+                            <li><span class="ti-star"></span></li>
+                            <li><span class="ti-star"></span></li>
+                            <li><span class="ti-star"></span></li>
+                            <li><span class="ti-star"></span></li>
+                            <li><span class="ti-star"></span></li>
+                        </ul>
+                    </div>
+                    <div class="pro__details">
+                        <p>@Model.ProductDescription </p>
+                    </div>
+                    <ul class="pro__dtl__prize">
+                        @if (Model.Discount == 0)
+                        {
+                            <li style="padding-left: 0px" class="new__price">@(Model.ProductPrice - Model.Discount).000vnd</li>
+                        }
+                        else
+                        {
+                            <li class="old__prize">@(Model.ProductPrice).000vnd</li>
+                            <li>@(Model.ProductPrice - Model.Discount).000vnd</li>
+                        }
+                    </ul>
+                    <form class="scroll-form" asp-action="index" asp-controller="Cart" method="post" id='myform'>
+                        <div class="pro__dtl__color">
+                            <h2 class="title__5">Choose Colour</h2>
+                            <ul class="pro__choose__color">
+                                @if (Model.IsAvailble == true)
+                                {
+                                    foreach (var d in Model.ProductDetails)
+                                    {
+
+                                        if (!myDictionary.ContainsKey(d.color.ToUpper()))
+                                        {
+                                            myDictionary.Add(d.color.ToUpper(), 0);
+                                        }
+                                        if (myDictionary[d.color.ToUpper()] == 0)
+                                        {
+                                            @if (d.color.Equals(ViewData["c"]))
+                                            {
+                                                <li>
+                                                    <input checked style="height: 0px; width: 40px" type="radio" class="btn-check" value="@d.color" name="color" id="color-@d.color">
+                                                    <label style=" border-width: 7px;  background-color: @d.color; height: 40px; width: 40px" class="btn" for="color-@d.color"></label>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li>
+                                                    <input style="height: 0px; width: 40px" type="radio" class="btn-check" value="@d.color" name="color" id="color-@d.color">
+                                                    <label style=" border-width: 7px;  background-color: @d.color; height: 40px; width: 40px" class="btn" for="color-@d.color"></label>
+                                                </li>
+                                            }
+                                        }
+                                        myDictionary[d.color.ToUpper()] = 1;
+                                    }
+                                }
+
+
+                            </ul>
+                        </div>
+                        <div class="pro__dtl__size">
+                            <h2 class="title__5">Size</h2>
+                            <ul class="pro__choose__size">
+                                @if (Model.IsAvailble == true)
+                                {
+                                    {
+                                        myDictionary.Clear();
+                                    }
+                                    foreach (var d in Model.ProductDetails)
+                                    {
+
+                                        if (!myDictionary.ContainsKey(d.size.ToUpper()))
+                                        {
+                                            myDictionary.Add(d.size.ToUpper(), 0);
+                                        }
+                                        if (myDictionary[d.size.ToUpper()] == 0)
+                                        {
+                                            if (d.size.Equals(ViewData["s"]))
+                                            {
+                                                <li>
+                                                    <input checked type="radio" class="btn-check" value="@d.size" name="size" id="size-@d.size">
+                                                    <label id="@d.size" style="width: 40px" class="btn " for="size-@d.size">@d.size</label>
+                                                </li>
+                                                Lsize.Add(d.size);
+                                            }
+                                            else
+                                            {
+                                                if (listS != null)
+                                                {
+                                                    if (listS.Contains(d.size))
+                                                    {
+                                                        <li>
+                                                            <input type="radio" class="btn-check" value="@d.size" name="size" id="size-@d.size">
+                                                            <label id="@d.size" style="pointer-events: none; color :#ceb3b3; width: 40px" class="btn " for="size-@d.size">@d.size</label>
+                                                        </li>
+                                                        Lsize.Add(d.size);
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>
+                                                            <input type="radio" class="btn-check" value="@d.size" name="size" id="size-@d.size">
+                                                            <label id="@d.size" style=" width: 40px" class="btn " for="size-@d.size">@d.size</label>
+                                                        </li>
+                                                        Lsize.Add(d.size);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        myDictionary[d.size.ToUpper()] = 1;
+
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <div class="product-action-wrap">
+                            <div class="prodict-statas"><span>Quantity :</span></div>
+                            @if (Model.IsAvailble)
+                            {
+                                <div class="product-quantity">
+                                    <div class="product-quantity">
+                                        <h3>
+                                            <span id="up" style=" cursor:pointer; margin-right: 6px" class="ti-angle-up"></span>
+                                            <span id="qua" style="font-size: 1.3em; font-weight: 200">1</span>
+                                            <span id="down" style="cursor:pointer; margin-left:6px" class="ti-angle-down"></span>
+                                        </h3>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <input id="quant" type="text" name="Quantity" value="1" hidden>
+                        <input type="text" name="productId" value="@ViewData["productId"]" hidden>
+                        @if (Model.IsAvailble == true)
+                        {
+                            <input id="sm" style="width: 30vh" class="btn btn-danger" type="submit" value="Add Cart" />
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-danger">Hết hàng</button>
+                        }
+                        <button id="hh" type="button" class="btn btn-danger" hidden>Hết hàng</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="htc__product__details__tab bg__white pb--120">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <ul class="nav product__deatils__tab mb--60" role="tablist">
+                    <li role="presentation" class="active">
+                        <a class="active" href="#reviews" role="tab" data-bs-toggle="tab">FeedBack</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product__details__tab__content" style="margin-left: 70px">
+                    <!-- Start Single Content -->
+                    @foreach (var l in Model.Feedbacks)
+                    {
+                        if (l.FeedbackStatus == "1")
+                        {
+                            var user = _shopContext.Users.Find(l.UserId);
+                            if (user != null)
+                            {
+                                var UserName = user.Email.Substring(0, user.Email.IndexOf("@"));
+
+                                <div class="review__address__inner">
+                                    <!-- Start Single Review -->
+                                    <div class="pro__review ans">
+                                        <div class="review__thumb">
+                                            <img src="~/images/avatar/User-avatar.svg.png" alt="review images" style="height: 70px; width: 70px;border-radius:100%; border: 2px solid">
+                                        </div>
+                                        <div class="review__details">
+
+                                            <div class="review__info">
+
+                                                <h4>@UserName</h4>
+
+
+                                            </div>
+                                            <div class="review__date">
+                                                <span>@l.FeedbackDate</span>
+                                            </div>
+                                            <p>@l.FeedbackDetail</p>
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <!-- End Single Review -->
+
+                                </div>
+                            }
+
+                        }
+                    }
+                </div>
+                <!-- End Single Content -->
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+@{
+    var danhSachDuLieu = Model.ProductDetails;
+}
+
+
+<script>
+    var Lsize = @Html.Raw(Json.Serialize(Lsize));
+    const radioButtons = document.querySelectorAll('input[name="color"]');
+    const inputField = document.getElementById('inputField');
+    var Ldetail = [];
+    @foreach (var item in danhSachDuLieu)
+    {
+        <text>
+            Ldetail.push({
+                Color: '@item.color',
+                Size: '@item.size',
+                Quantity: @item.quantity,
+            });
+        </text>
+    };
+
+    var check2 = 0;
+
+    radioButtons.forEach(radioButton => {
+        radioButton.addEventListener('change', () => {
+            let selectedValue = document.querySelector('input[name="color"]:checked').value;
+            let check = 0;
+            const inputs = document.querySelectorAll('input[name="size"]');
+            //size before is selected
+            let selectedInput = null;
+
+            inputs.forEach(input => {
+                if (input.checked) {
+                    selectedInput = input;
+                }
+            });
+            var sizeInputNoOutStock = [];
+            var sizeLabelNoOutStock = [];
+            Ldetail.forEach(function (item) {
+
+                if (item.Color.toUpperCase() === selectedValue.toUpperCase() && item.Quantity !== 0) {
+                    check = 1;
+                    var labelElement = document.getElementById(item.Size);
+                    var iElement = document.getElementById("size-" + item.Size);
+                    sizeInputNoOutStock.push(iElement);
+                    sizeLabelNoOutStock.push(labelElement);
+                    labelElement.style.color = "black";
+                    iElement.style.pointerEvents = 'auto';
+                    labelElement.style.pointerEvents = 'auto';
+                }
+
+                var labelElement = document.getElementById(item.Size);
+                var iElement = document.getElementById("size-" + item.Size);
+                labelElement.style.color = "#ceb3b3";
+                iElement.style.pointerEvents = 'none';
+                labelElement.style.pointerEvents = 'none';
+
+
+            });
+
+
+            if (check === 1) {
+                // before choosed is out stock in now
+                var check3 = 0;
+                document.getElementById("sm").removeAttribute("hidden");
+                document.getElementById("hh").setAttribute("hidden", true);
+                sizeInputNoOutStock.forEach(input => {
+                    if (sizeInputNoOutStock === selectedInput)
+                        check3 = 1;
+                    input.style.pointerEvents = 'auto';
+                });
+
+                sizeLabelNoOutStock.forEach(input => {
+                    input.style.color = "black";
+                    input.style.pointerEvents = 'auto';
+                });
+
+                if (check2 === 1 || check3 !== 1) {
+                    sizeInputNoOutStock[0].checked = true;
+                    check2 === 0
+                }
+
+            } else {
+                check2 = 1
+                document.getElementById("hh").removeAttribute("hidden");
+                document.getElementById("sm").setAttribute("hidden", true);
+            }
+
+        });
+    });
+
+
+    var Iquan = document.getElementById("quant");
+    var paragraph = document.getElementById("up");
+    var paragraph2 = document.getElementById("down");
+    var text = document.getElementById("qua");
+    var count = 1;
+
+    paragraph.addEventListener("click", function () {
+        count++;
+        text.textContent = count;
+        Iquan.value = count
+    });
+
+    paragraph2.addEventListener("click", function () {
+        if (count != 1) {
+            count--;
+            text.textContent = count;
+            Iquan.value = count
+        }
+    });
+
+</script>
+
+<script>
+    document.querySelector(".scroll-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var scrollPos = window.scrollY;
+        localStorage.setItem("scrollPos", scrollPos);
+        this.submit(); // Gửi yêu cầu tới Action About trong HomeController
+    });
+
+    window.onload = function () {
+        var scrollPos = localStorage.getItem("scrollPos");
+        if (scrollPos) {
+            window.scrollTo({ top: scrollPos, behavior: 'auto' });
+            localStorage.removeItem("scrollPos");
+        }
+    };
+</script>
+
+
+

@@ -1,0 +1,160 @@
+﻿﻿@{
+    ViewData["Title"] = "Home Page";
+    var listBlog = ViewData["listBlog"] as List<Blog>;
+    var count = 0;
+}
+@model List<Product>
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@if (!string.IsNullOrEmpty((string)ViewData["EDetailProduct"]))
+{
+    <script>
+        var thongBao = "Sản phảm bạn vừa tiềm kiếm không tồn tại, click OK để tiếp tục.";
+        alert(thongBao);
+    </script>
+}
+
+
+@if (TempData["subCate"] != null)
+{
+    <script>
+        var thongBao = "Loại bạn vừa tiềm kiếm không tồn tại, click OK để tiếp tục.";
+        alert(thongBao);
+    </script>
+}
+
+<div class="slider__container slider--one">
+    <div class="slider__activation__wrap owl-carousel owl-theme">
+        @if (listBlog != null)
+        {
+            foreach (var l in listBlog)
+            {
+                foreach (var i in l.ImageBlogs)
+                {
+                    if (i.IsBigImg == true)
+                    {
+                        <div class="slide slider__full--screen" style="background: rgba(0, 0, 0, 0) url(@i.ImageURL) no-repeat scroll center center / cover ;">
+                            <div class="container">
+                                <div class="row">
+                                    @if (count % 2 == 0)
+                                    {
+                                        count++;
+                                        <div class="col-lg-8  offset-lg-4">
+                                            <div class="slider__inner">
+                                                <h1>New Product <span class="text--theme">Collection</span></h1>
+                                                <div class="slider__btn">
+                                                    <a class="htc__btn" href="/blog/BlogDetails?blogId=@l.Blogid">shop now</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        count++;
+                                        <div class="col-lg-8">
+                                            <div class="slider__inner">
+                                                <h1>New Product <span class="text--theme">Collection</span></h1>
+                                                <div class="slider__btn">
+                                                    <a class="htc__btn" href="/blog/BlogDetails?blogId=@l.Blogid">shop now</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    break;
+                }
+
+
+            }
+        }
+        <!-- End Single Slide -->
+    </div>
+</div>
+<!-- End Slide -->
+<!-- Body -->
+@if (Model.Count != 0)
+{
+    <section class="htc__product__area ptb--130 bg__white">
+        <div class="container">
+            <div class="htc__product__container">
+                <!-- Start Product MEnu -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="product__menu">
+                        </div>
+                    </div>
+                </div>
+                <!-- End Product MEnu -->
+                <div class="row product__list">
+                    <!-- Start Single Product -->
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-3 single__pro col-lg-3 col-md-4 cat--1 col-sm-12">
+                            <div class="product foo">
+                                <div class="product__inner">
+                                    <div class="pro__thumb">
+                                        <a href="/Product/DetailProduct?id=@item.ProductId">
+                                            <img src="@item.ImageMain" alt="product images">
+                                        </a>
+                                    </div>
+                                    <div class="product__hover__info">
+                                        <ul class="product__action">
+                                            <li><a asp-controller="Product" asp-action="DetailProduct" asp-route-id="@item.ProductId" title="View" class="quick-view modal-view detail-link"><span class="ti-eye"></span></a></li>
+                                            <li> <a data-bs-toggle="tooltip" title="Add To Wishlist" class="add-to-cart scroll-link" asp-route-id="@item.ProductId" asp-action="AddWishList" asp-controller="Product"><span class="ti-heart"></span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product__details">
+                                    <h2><a asp-controller="Product" asp-action="DetailProduct" asp-route-id="@item.ProductId">@item.ProductName</a></h2>
+                                    <ul class="product__price">
+                                        @if (item.IsAvailble == false)
+                                        {
+                                            <li style="padding-left: 0px" class="new__price">Hết hàng</li>
+                                        }
+                                        else
+                                        {
+                                            if (item.Discount == 0)
+                                            {
+                                                <li style="padding-left: 0px" class="new__price">@(item.ProductPrice - item.Discount).000vnd</li>
+                                            }
+                                            else
+                                            {
+                                                <li class="old__price">@(item.ProductPrice).000vnd</li>
+                                                <li class="new__price">@(item.ProductPrice - item.Discount).000vnd</li>
+                                            }
+                                        }
+
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<script>
+    var links = document.querySelectorAll(".scroll-link");
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener("click", function (event) {
+            event.preventDefault();
+            var scrollPos = window.scrollY;
+            localStorage.setItem("scrollPos", scrollPos);
+            window.location.href = this.href;
+        });
+    }
+
+    window.onload = function () {
+        var scrollPos = localStorage.getItem("scrollPos");
+        if (scrollPos) {
+            window.scrollTo({ top: scrollPos, behavior: 'auto' });
+            localStorage.removeItem("scrollPos");
+        }
+    };
+</script>

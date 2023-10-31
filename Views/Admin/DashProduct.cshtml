@@ -1,0 +1,212 @@
+﻿@model List<Product>
+
+@{
+	Layout = "~/Views/Shared/_DashLayout.cshtml";
+}
+<script>
+	function check(event) {
+		// Display a confirmation dialog box
+		var confirmation = confirm("Are you sure you want to delete?");
+
+		// Check if the user confirmed the deletion
+		if (!confirmation) {
+			event.preventDefault();
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+</script>
+
+<div class="container-fluid dashboard-content ">
+
+	<!-- pageheader  -->
+
+	<div class="row">
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+			<div class="page-header">
+				<h2 class="pageheader-title">Quản Lý  </h2>
+				<div class="page-breadcrumb">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+							<li class="breadcrumb-item active" aria-current="page">List all product</li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<main role="main">
+
+
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex justify-content-between">
+					<form>
+						<div class="d-lg-flex align-items-center mb-4 gap-3">
+
+							<div class="position-relative">
+								<input oninput="SearchByname()" type="text" id="searchProduct" class="form-control ps-5 radius-30" placeholder="Product Name">
+
+							</div>
+							<div class="ms-auto"><a href="/Admin/CreateProduct" style="margin-left: 10px" class="btn btn-primary radius-30 mt-2 mt-lg-0"><i class="bx bxs-plus-square"></i>Add new product</a></div>
+
+
+
+						</div>
+					</form>
+					<div class="d-lg-flex align-items-center mb-4 gap-3">
+						<form name="upExcel" action="upExcelProduct" method="post" onsubmit="return validation()" enctype="multipart/form-data">
+							<div class="row">
+								<div class="col-md-8">
+									<input type="file" name="fileExcel" class="form-control ps-5 radius-30">
+								</div>
+
+								<input type="submit" value="Add by Excel" class="btn btn-primary btn-sm radius-30 px-4">
+							</div>
+
+						</form>
+					</div>
+				</div>
+				@*<div class="ms-auto text-end">
+				<a href="/Admin/CreateProduct" class="btn btn-primary radius-30 mt-2 mt-lg-0">
+				<i class="bx bxs-plus-square"></i>Add new product
+				</a>
+				</div>*@
+
+
+				<div class="table-responsive">
+					<div id="_prodList">
+						@if (TempData["checked"] != null)
+						{
+							<script>
+								var mes = "Product bạn muốn tìm không tồn tại, click Ok để tiếp tục."
+								alert(mes);
+							</script>
+						}
+						@if (Model == null)
+						{
+							<p>No Products found.</p>
+						}
+						else
+						{
+							<table class="table mb-0 text-center">
+								<thead class="table-light">
+									<tr>
+										<th>Id</th>
+										<th>Product Name</th>
+										<th>Main Image</th>
+										<th>Unit Price</th>
+										<th>Date</th>
+										<th>Home status</th>
+										<th>Actions</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var product in Model)
+									{
+
+
+										<tr>
+											<td>
+												<div class="d-flex align-items-center">
+
+													<div class="ms-2">
+														<h6 class="mb-0 font-14">@product.ProductId</h6>
+													</div>
+												</div>
+											</td>
+											<td>@product.ProductName</td>
+											<td>
+												<img src="@product.ImageMain" style="max-width: 50px">
+											</td>
+											<td>@product.ProductPrice</td>
+
+											<td>@string.Format("{0:dddd, dd MMMM yyyy}", product.ImportDate)</td>
+
+											<td>
+												<a href="/Admin/changeHomeStatus?pid=@product.ProductId">
+													<i class="fas fa-edit"></i>
+													@(product.HomeStatus == true ? "Enable" : "Disable")
+
+												</a>
+											</td>
+
+
+											<td class="align-middle">
+												<a href="/Admin/ViewDetailProd?productId=@product.ProductId" class="btn btn-primary btn-sm radius-30 px-4">View Detail</a>
+												<a href="/Admin/UpdateProduct?productId=@product.ProductId" class="btn btn-info btn-sm radius-30 px-4">Update</a>
+												<a href="/Admin/delProd?productId=@product.ProductId" onclick="check(event)" class="btn btn-danger btn-sm radius-30 px-4">Delete</a>
+											</td>
+										</tr>
+
+									}
+
+								</tbody>
+							</table>
+						}
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+
+		<script>
+			function SearchByname() {
+
+				$.ajax({
+					type: "GET",
+					url: '@Url.Action("searchProductByName","Admin")',
+					data: { name: $('#searchProduct').val() },
+					success: function (result) {
+						// Handle the search results
+						$("#_prodList").empty();
+						$("#_prodList").html(result);
+					}
+				});
+			}
+
+			var files = document.forms['upExcel']['fileExcel'];
+			var validFile = ["xls", "xlsx", "xlsm"];
+
+			function validation() {
+				if (files.value != '') {
+
+					var pos_of_file = files.value.lastIndexOf('.') + 1;
+					var tails = files.value.substring(pos_of_file);
+
+					var result = validFile.includes(tails);
+					if (result) {
+						return true;
+					} else {
+						alert("wrong type of file");
+						return false;
+					}
+
+				} else {
+					alert("No file has been choice");
+					return false;
+
+				}
+
+			}
+			@if (TempData["checkExcel"] != null)
+			{
+				<text>
+					alert("@TempData["checkExcel"]");
+				</text>
+			}
+
+		</script>
+
+	</main>
+	<!-- end pageheader  -->
+</div>
+

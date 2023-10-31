@@ -1,0 +1,123 @@
+﻿@model List<Bill>
+
+@{
+	Layout = "~/Views/Shared/_DashLayout.cshtml";
+}
+
+<div class="container-fluid dashboard-content ">
+
+	<!-- pageheader  -->
+
+	<div class="row">
+		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+			<div class="page-header">
+				<h2 class="pageheader-title">Quản Lý  </h2>
+				<div class="page-breadcrumb">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="/admin/index" class="breadcrumb-link">Dashboard</a></li>
+							<li class="breadcrumb-item active" aria-current="page">View all orders done</li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<main role="main">
+		@if (Model == null)
+		{
+			<p>No bills found.</p>
+		}
+		else
+		{
+
+			<div class="card">
+				<div class="card-body">
+					@{
+						// Tính tổng giá trị các hóa đơn
+						double totalRevenue = Model.Sum(bill => bill.TotalPrice);
+						// Định dạng số thành chuỗi có dấu phân cách và tiền tố VND
+						string formattedTotalRevenue = totalRevenue.ToString("N0").Replace(",", ".") + ".000" + " VND";
+					}
+
+
+					<div class="d-lg-flex align-items-center mb-4 gap-3">
+						<h2>Tổng doanh thu: @formattedTotalRevenue</h2>
+					</div>
+
+
+					<div class="table-responsive">
+						<table class="table mb-0">
+							<thead class="table-light">
+								<tr>
+									<th>Order#</th>
+									<th>UserName</th>
+									<th>Status</th>
+									<th>Total</th>
+									<th>Date</th>
+									<th>Address</th>
+
+
+
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var bill in Model)
+								{
+
+
+									<tr>
+										<td>
+											<div class="d-flex align-items-center">
+
+												<div class="ms-2">
+													<h6 class="mb-0 font-14">@bill.BillId</h6>
+												</div>
+											</div>
+										</td>
+										<td>@bill.Email</td>
+										<td>
+											@if (bill.BillStatus == "3")
+											{
+												<div class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">
+													<i class='bx bxs-circle me-1'></i>Đơn hoàn tất
+												</div>
+											}
+
+											@*else if (bill.BillStatus == "3")
+									{
+									<div class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">
+									<i class='bx bxs-circle me-1'></i>Đã hoàn thành
+									</div>
+									}*@
+										</td>
+										<td>@(bill.TotalPrice.ToString("N0").Replace(",", ".") + ".000" + " VND")</td>
+										<td>@string.Format("{0:dddd, dd MMMM yyyy}", bill.PurchaseDate)</td>
+
+										<td>@bill.ShippingAddress</td>
+
+
+
+
+									</tr>
+
+								}
+
+							</tbody>
+						</table>
+
+
+					</div>
+
+				</div>
+			</div>
+
+		}
+	</main>
+	<!-- end pageheader  -->
+</div>
+
+
+

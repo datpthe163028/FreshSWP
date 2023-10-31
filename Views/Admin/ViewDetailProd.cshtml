@@ -1,0 +1,234 @@
+﻿@{
+    Layout = "~/Views/Shared/_DashLayout.cshtml";
+}
+@model Product
+@{
+    List<ProductDetails> pr = ViewBag.ProductDetails;
+    List<ImageProduct> imgProd = ViewBag.ImageProducts;
+}
+<script>
+    function check(event) {
+        // Display a confirmation dialog box
+        var confirmation = confirm("Are you sure you want to delete?");
+
+        // Check if the user confirmed the deletion
+        if (!confirmation) {
+            event.preventDefault();
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+</script>
+<div class="container-fluid dashboard-content ">
+
+    <!-- pageheader  -->
+
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="page-header">
+                <h2 class="pageheader-title">Quản Lý  </h2>
+                <div class="page-breadcrumb">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/admin/index" class="breadcrumb-link">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/DashProduct" class="breadcrumb-link">List all product</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Product detail id : @Model.ProductId</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <main role="main">
+        <div class="row">
+            <div class="offset col-xl-12 col-lg-12 col-md-4 col-sm-4 col-12">
+                <div class="row">
+
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 pl-xl-0 pl-lg-0 pl-md-0 border-left m-b-30">
+                        <div class="simple-card">
+                            <ul class="nav nav-tabs" id="myTab5" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active border-left-0" id="product-tab-1"
+                                       data-toggle="tab" href="#tab-1" role="tab"
+                                       aria-controls="product-tab-1" aria-selected="true">
+                                        detail
+                                        Product
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="product-tab-2" data-toggle="tab" href="#tab-2"
+                                       role="tab" aria-controls="product-tab-2"
+                                       aria-selected="false">Image</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent5">
+                                <div class="tab-pane fade show active" id="tab-1" role="tabpanel"
+                                     aria-labelledby="product-tab-1">
+                                    <div class="card">
+
+                                        <div class="card-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">id</th>
+                                                        <th scope="col">size</th>
+                                                        <th scope="col">quantity</th>
+                                                        <th scope="col">color</th>
+                                                        <th scope="col">action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+
+                                                    @foreach (var a in pr)
+                                                    {
+                                                        <tr>
+                                                            <th scope="row">@a.productDetailId</th>
+                                                            <td>@a.size</td>
+                                                            <td>@a.quantity</td>
+                                                            <td>
+                                                                <label style=" border-width: 7px;  background-color: @a.color; height: 30px; width: 30px" for="color-@a.color"></label>
+                                                            </td>
+                                                            <td>
+                                                                <a href="/admin/DelDetailProduct?productDetailId=@a.productDetailId" class="btn btn-danger btn-sm radius-30 px-4" onclick="check(event)">
+                                                                    <i class="icon-close"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+
+
+                                                    <tr>
+                                                        <form action="CreateProductDetail" method="post">
+                                                            <input type="hidden" name="productId" value="@Model.ProductId">
+                                                        <th scope="row">#</th>
+                                                        <td>
+                                                            <select class="form-control ps-5" name="size" for="size">
+                                                                <option value="XS">XS</option>
+                                                                <option value="S">S</option>
+                                                                <option value="M">M</option>
+                                                                <option value="L">L</option>
+                                                                <option value="XL">XL</option>
+                                                                <option value="XXL">XXL</option>
+                                                            </select>
+                                                        </td>
+                                                        <td><input class="form-control ps-5 radius-30" type="number" name="quantity" min="0" max="999" step="1" required></td>
+                                                        <td><input type="color" name="color" id="color" style="-webkit-appearance: none; -moz-appearance:none; appearance: none; width:40px; height:40px; border:none; cursor:none;"></td>
+                                                        <td> <input type="submit" value="add" class="btn btn-success btn-sm radius-30 px-4"></td>
+                                                        </form>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="tab-2" role="tabpanel"
+                                     aria-labelledby="product-tab-2">
+                                    <div class="card">
+
+                                        <div class="card-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">id</th>
+                                                        <th scope="col">image</th>
+                                                        <th scope="col">action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @foreach (var a in imgProd)
+                                                    {
+                                                        <tr>
+                                                            <th scope="row">@a.ImageProductId</th>
+                                                            <td><img src="@a.ImageURL" style="max-width: 50px"></td>
+                                                            <td>
+                                                                <a href="/admin/DelImageProduct?ImageProductId=@a.ImageProductId" class="btn btn-danger btn-sm radius-30 px-4" onclick="check(event)">
+                                                                    <i class="icon-close"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+
+
+                                                    <tr>
+
+                                                        <form enctype="multipart/form-data" action="CreateImageProduct" method="post">
+                                                        <th scope="row">#</th>
+                                                        <input type="hidden" name="productId" value="@Model.ProductId">
+                                                        <td>
+
+                                                            <input name="ImageUrl" type="file" id="FLFrontImage" required
+                                                                   onchange="document.getElementById('FrontImagePrv').src = window.URL.createObjectURL(this.files[0])" style="width:200px">
+                                                            <img class="align-content-md-center" id="FrontImagePrv" src="" alt="imagePrv" width="150"
+                                                                 height="150">
+                                                        </td>
+
+                                                        <td> <input type="submit" value="add" class="btn btn-success btn-sm radius-30 px-4"></td>
+
+                                                        </form>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 pl-xl-0 pl-lg-0 pl-md-0 border-left m-b-30">
+                        <div class="product-details">
+                            <div class="border-bottom pb-3 mb-3">
+                                <h2 class="mb-1">id: @Model.ProductId</h2>
+                                <h2 class="mb-1">@Model.ProductName</h2>
+
+                            </div>
+                            <div class="product-image border-bottom">
+                                <img class="d-sm-block align-center"
+                                     src="@Model.ImageMain" width="300" height="300" style="margin: auto;">
+                            </div>
+                            <div class="product- border-bottom">
+                                <h3 class="mb-0 text-danger">Discount @Model.Discount%</h3>
+                                <h3 class="mb-0 text-primary">$@Model.ProductPrice</h3>
+                               
+                                @if (Model.IsAvailble==true)
+                                {
+                                   <h3 class="mb-0 text-danger">Status: stocking</h3>
+                                }else
+                                {
+                                    <h3 class="mb-0 text-danger">Status: out of stock</h3>
+                                }
+
+                            </div>
+                            <div class="product-description">
+                                <h4 class="mb-1">Descriptions</h4>
+                                <p>
+                                    @Model.ProductDescription
+                                </p>
+                                <a href="/admin/DashProduct" class="btn btn-primary btn-block btn-lg">back</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+    <!-- end pageheader  -->
+</div>
+
+<script>
+    @if (TempData["mess"] != null)
+    {
+        <text>
+            alert("@TempData["mess"]");
+        </text>
+    }
+</script>

@@ -1,0 +1,193 @@
+﻿@model List<Bill>
+@using Project.Data;
+@inject ShopContext _shopContext
+@{
+    var check = ViewData["check"] as string;
+    if (check == null)
+        check = "";
+
+    var count = 0;
+}
+<style>
+    .bill-item {
+        border: 1px solid #ccc;
+        padding: 25px;
+        text-align: left;
+        background-color: #efeffe;
+        margin: 25px;
+        border-radius: 10px;
+    }
+
+        .bill-item h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .bill-item p {
+            margin-bottom: 5px;
+        }
+</style>
+
+<div>
+    <div class="col-12">
+        <nav class="mainmenu__nav  d-block">
+            <ul class="main__menu">
+                <li class="status-menu-item" style="border-top: 1px solid;border-bottom: 1px solid;border-left: 1px solid;border-right: 1px solid;width: 170px;text-align: center; ">
+                    @if (check.Equals("-1"))
+                    {
+                        <a style="color: red" href="/cart/processbill?status=''">Tất cả</a>
+                    }
+                    else
+                    {
+                        <a href="/cart/processbill?status=''">Tất cả</a>
+                    }
+                </li>
+                <li class="status-menu-item" style="border-top: 1px solid;border-bottom: 1px solid;border-left: 1px solid;border-right: 1px solid;width: 170px;text-align: center;">
+                    @if (check.Equals("0"))
+                    {
+                        <a style="color: red" href="/cart/processbill?status=0">Đã đặt hàng</a>
+                    }
+                    else
+                    {
+                        <a href="/cart/processbill?status=0">Đã đặt hàng</a>
+                    }
+                </li>
+                <li class="status-menu-item" style="border-top: 1px solid;border-bottom: 1px solid;border-left: 1px solid;border-right: 1px solid;width: 170px;text-align: center;">
+                    @if (check.Equals("1"))
+                    {
+                        <a style="color: red" href="/cart/processbill?status=1">Đã nhận đơn</a>
+                    }
+                    else
+                    {
+                        <a href="/cart/processbill?status=1">Đã nhận đơn</a>
+                    }
+
+                </li>
+                <li class="status-menu-item" style="border-top: 1px solid;border-bottom: 1px solid;border-left: 1px solid;border-right: 1px solid;width: 170px;text-align: center;">
+                    @if (check.Equals("2"))
+                    {
+                        <a style="color: red" href="/cart/processbill?status=2">Đang giao hàng</a>
+                    }
+                    else
+                    {
+                        <a href="/cart/processbill?status=2">Đang giao hàng</a>
+                    }
+                </li>
+                <li class="status-menu-item" style="border-top: 1px solid;border-bottom: 1px solid;border-left: 1px solid;border-right: 1px solid;width: 170px;text-align: center;">
+                    @if (check.Equals("3"))
+                    {
+                        <a style="color: red" href="/cart/processbill?status=3">Đã hoàn thành</a>
+                    }
+                    else
+                    {
+                        <a href="/cart/processbill?status=3">Đã hoàn thành</a>
+                    }
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!-- End Bradcaump area -->
+    <div class="wishlist-area ptb--120 bg__white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="wishlist-content">
+                        <div class="wishlist-table table-responsive" style="text-align: center;">
+                            @if (Model == null)
+                            {
+                                <img src="~/images/logo/shopping-bag.png" style="width: 150px;height: 150px;">
+                                <p>Không có đơn hàng nào</p>
+                            }
+                            else
+                            {
+                                @foreach (var bill in Model)
+                                {
+
+                                    <div class="bill-item">
+                                        <div class="bill-item-inner">
+
+                                            @if (check.Equals("3"))
+                                            {
+                                                foreach (var l in bill.BillDetails)
+                                                {
+                                                    var temp = "fo" + count;
+
+                                                    <table>
+                                                        <tbody>
+                                                            @{
+                                                                Product product = _shopContext.Products.Find(l.ProductId);
+                                                            }
+                                                            <tr>
+                                                                <td class="product-thumbnail"><a href="#"><img src="@product.ImageMain" alt="product img" /></a></td>
+                                                                <td style="width: 12vw" class="product-name"><a asp-controller="Product" asp-action="DetailProduct" asp-route-id="@product.ProductId">@product.ProductName</a></td>
+                                                                <td style="width: 5vw" class="product-price"><span style="display:block; margin-left:25px; width: 25px; height: 25px; background-color: @l.color " class="amount"></span></td>
+                                                                <td style="width: 12vw" class="product-price"><span class="amount">@l.size</span></td>
+                                                                <td style="width: 12vw" class="product-quantity">
+                                                                    @l.quantity
+                                                                </td>
+                                                                <td class="product-quantity">
+                                                                    <a class="btn" onclick="f('@temp')">Gửi Feedback</a>
+                                                                </td>
+
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <form id="@temp" method="post" asp-controller="Feedback" asp-action="Create" hidden>
+                                                        <input type="hidden" name="billId" value="@bill.BillId" />
+                                                        <input type="hidden" name="productId" value="@l.ProductId" />
+                                                        <div class="mb-3">
+                                                            <label for="feedbackTitle_@l.ProductId" class="form-label">Tiêu đề</label>
+                                                            <input type="text" class="form-control" id="feedbackTitle_@l.ProductId" name="feedbackTitle" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="feedbackDetail_@l.ProductId" class="form-label">Nội dung</label>
+                                                            <textarea class="form-control" id="feedbackDetail_@l.ProductId" name="feedbackDetail" rows="3" required></textarea>
+                                                        </div>
+                                                        <button type="button" class="btn btn-primary" onclick="sm('@temp')">Gửi</button>
+                                                    </form>
+                                                    count++;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <table>
+                                                    <tbody>
+                                                        @foreach (var l in bill.BillDetails)
+                                                        {
+                                                            Product product = _shopContext.Products.Find(l.ProductId);
+                                                            <tr>
+                                                                <td class="product-thumbnail"><a href="#"><img src="@product.ImageMain" alt="product img" /></a></td>
+                                                                <td style="width: 12vw" class="product-name"><a asp-controller="Product" asp-action="DetailProduct" asp-route-id="@product.ProductId">@product.ProductName</a></td>
+                                                                <td style="width: 5vw" class="product-price"><span style="display:block;  margin-left:40px; width: 25px; height: 25px; background-color: @l.color " class="amount"></span></td>
+                                                                <td style="width: 12vw" class="product-price"><span class="amount">@l.size</span></td>
+                                                                <td style="width: 12vw" class="product-quantity">
+                                                                    @l.quantity
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function f(a) {
+        var x = document.getElementById(a);
+        x.hidden = !x.hidden;
+    }
+
+    function sm(a) {
+        var x = document.getElementById(a);
+        x.submit();
+    }
+</script>

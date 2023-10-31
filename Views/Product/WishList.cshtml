@@ -1,0 +1,86 @@
+﻿@model List<Product>
+@{
+    var subCate = ViewData["subCate"] as SubCategory;
+    var listSubCate = ViewData["listSubCate"] as List<SubCategory>;
+}
+<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(/images/bg/4.jpg) no-repeat scroll center center / cover ;">
+    <div class="ht__bradcaump__wrap">
+    </div>
+</div>
+
+
+<section class="htc__product__area shop__page ptb--130 bg__white">
+    <div class="container">
+        <div class="htc__product__container">
+
+            <div class="row product__list">
+
+                @foreach (var l in Model)
+                {
+                    <div class="col-md-4 single__pro col-lg-3 col-sm-12 cat--4">
+                        <div class="product foo">
+                            <div class="product__inner">
+                                <div class="pro__thumb">
+                                    <a href="#">
+                                        <img src="@l.ImageMain" alt="product images">
+                                    </a>
+                                </div>
+                                <div class="product__hover__info">
+                                    <ul class="product__action">
+                                        <li><a asp-controller="Product" asp-action="DetailProduct" asp-route-id="@l.ProductId" title="View" class="quick-view modal-view detail-link"><span class="ti-eye"></span></a></li>
+                                        <li><a title="Remove" asp-route-id="@l.ProductId" class="scroll-link" asp-action="RemoveWishList" asp-controller="Product"><span class="ti-close"></span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product__details">
+                                <h2><a asp-controller="Product" asp-action="DetailProduct" asp-route-id="@l.ProductId">@l.ProductName</a></h2>
+                                <ul class="product__price">
+                                    @if (l.IsAvailble == false)
+                                    {
+                                        <li style="padding-left: 0px" class="new__price">Hết hàng</li>
+                                    }
+                                    else
+                                    {
+                                        if (l.Discount == 0)
+                                        {
+                                            <li style="padding-left: 0px" class="new__price">@(l.ProductPrice - l.Discount).000vnd</li>
+                                        }
+                                        else
+                                        {
+                                            <li class="old__price">@(l.ProductPrice).000vnd</li>
+                                            <li class="new__price">@(l.ProductPrice - l.Discount).000vnd</li>
+                                        }
+                                    }
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    var links = document.querySelectorAll(".scroll-link");
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener("click", function (event) {
+            event.preventDefault();
+            var scrollPos = window.scrollY;
+            localStorage.setItem("scrollPos", scrollPos);
+            window.location.href = this.href;
+        });
+    }
+
+    window.onload = function () {
+        var scrollPos = localStorage.getItem("scrollPos");
+        if (scrollPos) {
+            window.scrollTo({ top: scrollPos, behavior: 'auto' });
+            localStorage.removeItem("scrollPos");
+        }
+    };
+</script>

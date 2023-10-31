@@ -1,0 +1,164 @@
+﻿@model List<CartItem>
+@using Project.Data
+@inject SignInManager<IdentityUser> SignInManager
+@inject ShopContext _shopContext
+@{
+    double? total = 0;
+}
+<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(/images/bg/2.jpg) no-repeat scroll center center / cover ;">
+    <div class="ht__bradcaump__wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="bradcaump__inner text-center">
+                        <h2 class="bradcaump-title">Cart</h2>
+                        <nav class="bradcaump-inner">
+                            <a class="breadcrumb-item" asp-action="index" asp-controller="Home">Home</a>
+                            <span class="brd-separetor">/</span>
+                            <span class="breadcrumb-item active">Cart</span>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (Model != null)
+    {
+        if (Model.Count != 0)
+        {
+            <div class="cart-main-area ptb--120 bg__white">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-12">
+
+                            <div class="table-content table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th class="product-thumbnail">Image</th>
+                                            <th class="product-name">Product</th>
+                                            <th class="product-name">Color</th>
+                                            <th class="product-name">Size</th>
+                                            <th class="product-quantity">Quantity</th>
+                                            <th class="product-price">Price</th>
+                                            <th class="product-subtotal">Total</th>
+                                            <th class="product-remove">Remove</th>
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody>
+                                        @foreach (var l in Model)
+                                        {
+                                            Product product = _shopContext.Products.Find(l.ProductId);
+                                            <tr>
+                                                <td class="product-thumbnail"><a href="#"><img src="@product.ImageMain" alt="product img" /></a></td>
+                                                <td class="product-name"><a asp-controller="Product" asp-action="DetailProduct" asp-route-id="@product.ProductId">@product.ProductName</a></td>
+                                                <td class="product-price"><span style="display:block; margin-left:44px; width: 25px; height: 25px; background-color: @l.color " class="amount"></span></td>
+                                                <td class="product-price"><span class="amount">@l.size</span></td>
+                                                <td class="product-quantity">
+                                                    <h3>
+                                                        <a asp-controller="Cart" asp-action="Index" asp-route-choice="up" asp-route-id="@l.CartItemId"><span class="ti-angle-up"></span></a>
+                                                        @l.Quantity
+                                                        <a asp-controller="Cart" asp-action="Index" asp-route-choice="down" asp-route-id="@l.CartItemId"><span class="ti-angle-down"></span></a>
+                                                    </h3>
+                                                </td>
+                                                <td class="product-subtotal">
+                                                    @(
+                                                        (product.ProductPrice - product.Discount).ToString("N0").Replace(",", ".") + ".000" + " VND"
+                                                        )
+                                                </td>
+                                                <td class="product-subtotal">
+                                                    @(
+                                                        ((product.ProductPrice - product.Discount) * l.Quantity).ToString("N0").Replace(",", ".") + ".000" + " VND"
+                                                        )
+
+                                                    @{
+                                                        total = total + (product.ProductPrice - product.Discount) * l.Quantity;
+                                                    }
+                                                </td>
+                                                <td class="product-remove"><a asp-controller="Cart" asp-action="Index" asp-route-choice="remove" asp-route-id="@l.CartItemId">X</a></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8 col-sm-12">
+                                    <div class="buttons-cart">
+                                        <a href="/home/index">Back To Home</a>
+                                    </div>
+                                    <div class="coupon">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12 ">
+                                    <div class="cart_totals">
+                                        <h2>Cart Totals</h2>
+                                        <table>
+                                            <tbody>
+                                                <tr class="cart-subtotal">
+                                                </tr>
+                                                <tr class="shipping">
+                                                    <th>Shipping</th>
+                                                    <td>
+                                                        <ul id="shipping_method">
+                                                            <li>
+                                                                <input type="radio" id="ShippingMethod1" name="flexRadioShippingMethod" />
+                                                                <label for="ShippingMethod1">
+                                                                    Giao hàng tiết kiệm
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <input type="radio" id="ShippingMethod2" name="flexRadioShippingMethod" />
+                                                                <label for="ShippingMethod2">
+                                                                    VNPost
+                                                                </label>
+                                                            </li>
+                                                            <li></li>
+                                                        </ul>
+                                                        <p><a class="shipping-calculator-button" href="#">Calculate Shipping</a></p>
+                                                    </td>
+                                                </tr>
+                                                <tr class="order-total">
+                                                    <th>Total</th>
+                                                    <td>
+
+                                                        <strong><span class="amount">@(total.Value.ToString("N0").Replace(",", ".") + ".000" + " VND")</span></strong>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="wc-proceed-to-checkout">
+                                            <a href="/Order/Index">Thanh toán</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5 mx-auto">
+                        <p style="height: 50px;" class="btn btn-danger">Không có sản phẩm nào trong giỏ hàng của bạn.</p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5 mx-auto">
+                    <p style="height: 50px;" class="btn btn-danger">Không có sản phẩm nào trong giỏ hàng của bạn.</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
